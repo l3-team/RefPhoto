@@ -1,0 +1,34 @@
+l3_image:
+    path: /image/{token}
+    defaults: { _controller: Lille3PhotoBundle:Main:image }
+
+l3_create_token:
+    path: /token/add/{uid}
+    defaults: { _controller: Lille3PhotoBundle:Main:createToken }
+
+l3_create_tokens:
+    path: /token/add
+    defaults: { _controller: Lille3PhotoBundle:Main:createMultiTokens }
+    requirements:
+        _method: post
+
+l3_create_tokens_etu:
+    path: /tokenEtu/add/{codeetu}
+    defaults: { _controller: Lille3PhotoBundle:Main:createTokenEtu }   
+
+l3_create_tokens_pers:
+    path: /tokenPers/add/{codepers}
+    defaults: { _controller: Lille3PhotoBundle:Main:createTokenPers }
+
+l3_binary_image_without_token:
+    path: /binary/{uid}
+    defaults: { _controller: Lille3PhotoBundle:Main:binary }
+
+l3_binary_image_without_token_etu:
+    path: /binaryEtu/{codeetu}
+    defaults: { _controller: Lille3PhotoBundle:Main:binaryEtu }
+    
+l3_binary_image_without_token_pers:
+    path: /binaryPers/{codepers}
+    defaults: { _controller: Lille3PhotoBundle:Main:binaryPers }
+ 

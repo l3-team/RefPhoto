@@ -1,0 +1,51 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     symfony
+    database_user:     root
+    database_password: ~
+    # You should uncomment this if you want use pdo_sqlite
+    # database_path: "%kernel.root_dir%/data.db3"
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    ldap_hostname: ldap.univ.fr
+    ldap_base_dn: 'dc=univ,dc=fr'
+    ldap_dn: 'cn=user,ou=ldapusers,dc=univ,dc=fr'
+    ldap_password: 'password'
+
+    easyid_activated: 'false'
+    easyid_username: "easyid"
+    easyid_password: "password"
+    easyid_connection: "localhost:1522/EASYID"
+
+    easyidcomue_activated: 'false'
+    easyidcomue_dirlocalread: '/srv/photos/dev/datas'
+    easyidcomue_extfile: '.jpg'
+
+    db_hostname: bdd.univ.fr
+    db_username: dbuser
+    db_password: dbpass
+    db_database: "photo"
+
+    photo_path: "/srv/photos/dev/binaries"
+    photo_resize: "161x178"
+    default_photo: /var/www/ws-refphotos/htdocs/default.jpg
+    blocked_photo: /var/www/ws-refphotos/blocked.jpg
+
+    
+
+    memcached_host: localhost
+
+    valid_server: ~
+    
+    ip_reverseproxy: ~

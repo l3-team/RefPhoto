@@ -1,0 +1,4 @@
+services:
+    lille3_photo.service:
+        class: Lille3\PhotoBundle\Service\PhotoService
+        arguments: [@ldap_object.manager, %lille3_photo%]

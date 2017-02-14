@@ -1,0 +1,3 @@
+l3_image:
+    resource: "@Lille3PhotoBundle/Resources/config/routing.yml"
+    prefix:   /
