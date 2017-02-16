@@ -38,7 +38,7 @@ Pre-requisites :
 * List for ip address of dns host for the authorized applications ;
 * Optionnal : Ip address for the reverse proxy (for separated DMZ networks) ;
 
-Installation de l'application.
+Installation
 ---
 * the configuration is in file app/config/parameters.yml (just copy file app/config/parameters.yml.dist in app/config/parameters.yml and modify it) :
 ```
@@ -61,7 +61,7 @@ Installation de l'application.
     db_password: dbpass
     db_database: "photo"
 
-    photo_path: "/srv/photos/binaries"
+    photo_path: "/srv/photos/binaries"			# where the binaries photo store is stored
     photo_resize: "161x178"
     default_photo: /var/www/ws-refphotos/htdocs/default.jpg
     blocked_photo: /var/www/ws-refphotos/blocked.jpg
@@ -93,7 +93,12 @@ sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
 composer install --optimize-autoloader
 ```
 
-Availables commads :
+* create the schema of the MySQL database :
+```
+mysql -h dbserver.host.domain -u root -p < dump.sql
+```
+
+Availables commands :
 ---
 - for import the photo of the user which UID is P7279 :
 ```
