@@ -80,7 +80,6 @@ class PhotoService {
 
 		if(in_array('faculty', $people->getEduPersonAffiliation()->toArray()) || in_array('employee', $people->getEduPersonAffiliation()->toArray())) {
 			// Si c'est un personnel
-			//$externalReference = '0' . substr($uid, 1);
 			if(is_null($people->getSupannEmpId())) {
 				$output->writeln(date('d-m-Y H:i:s') . ':<error>Impossible de récupérer le numéro individu pour l\'uid '.$uid.'</error>');
 				return;
@@ -88,12 +87,10 @@ class PhotoService {
 			$externalReference = '0' . $people->getSupannEmpId();
                         $id = $people->getSupannEmpId();
 		} elseif(in_array('student', $people->getEduPersonAffiliation()->toArray())) {
-			//if(is_null($people->getLille3CodeCarteEtu())) {
                         if(is_null($people->getSupannEtuId())) {
 				$output->writeln(date('d-m-Y H:i:s') . ':<error>Impossible de récupérer le numéro étudiant pour l\'uid '.$uid.'</error>');
 				return;
 			}
-			//$externalReference = $people->getLille3CodeCarteEtu();
                         $externalReference = $people->getSupannEtuId();
                         $id = $people->getSupannEtuId();
 		} else {
@@ -101,7 +98,7 @@ class PhotoService {
 		}
 
                 if ($this->setting['easyid']['activated'] == 'true') {
-                    $stid = oci_parse($this->oracle, 'SELECT IMAGE_BLOB as IMAGE FROM v_lil3_trombi WHERE external_reference=:ref');
+                    $stid = oci_parse($this->oracle, 'SELECT p.FIRSTNAME, p.LASTNAME, p.USERNAME, p.EXTERNAL_REFERENCE, sib.IMAGE_BLOB as IMAGE FROM squirel_person p left join squirel_image si on p.PHOTO_CROPPED_ID = si.IMAGE_ID left join SQUIREL_IMAGE_BLOB sib on si.BLOB_ID = sib.IMAGE_BLOB_ID WHERE p.EXTERNAL_REFERENCE=:ref');
                     oci_bind_by_name($stid, ':ref', $externalReference);
                     oci_execute($stid);
 
@@ -113,9 +110,7 @@ class PhotoService {
                 }
 
                 if ($this->setting['easyidcomue']['activated'] == 'true') {
-                    //$output->writeln('je passe ici');
                     $img = $this->getPhotoFromComue($uid, $id, $people->getEduPersonPrimaryAffiliation(), $output);
-                    //echo $img;
                 } else { 
                     $img = null;
                 }
@@ -125,16 +120,11 @@ class PhotoService {
                         
                         if (!is_null($result['IMAGE'])) {
                             $image = $result['IMAGE'];
-                            //echo $image->load();
                         }
 
-                        //echo $img;    
-                        
                         if (!is_null($img)) {
-                            //echo "je passe ici";
                             list($imageSha1, $originSha1) = $this->saveImage($img);
                         } else {
-                            //echo "je passe là";
                             list($imageSha1, $originSha1) = $this->saveImage($image->load());
                         }
                         
