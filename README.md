@@ -20,6 +20,8 @@ How it works (two steps use) :
 
 Other routes (one step use) :
 ---
+- the route /tokenEtu/add/<supannEtuId> is accessed only for authorized application (example : http://server/refphoto/tokenEtu/add/8877665544), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
+- the route /tokenPers/add/<supannEmpId> is accessed only for authorized application (example : http://server/refphoto/tokenPers/add/3007279), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
 - the route /binary/<uid> is accessed only for authorized application (example : http://server/refphoto/binary/P7279), it shows the photo of the user (according his choice if the LDAP field usePhoto) ;
 - the route /binaryEtu/<supannEtuId> is accessed only for authorized application (example : http://server/refphoto/binaryEtu/8877665544), it shows the photo of the user (according the LDAP field usePhoto) ;
 - the route /binaryPers/<supannEmpId> is accessed only for authorized application (example : http://server/refphoto/binaryPers/3007279), it shows the photo of the user (according 
@@ -38,7 +40,7 @@ Pre-requisites :
 
 Installation de l'application.
 ---
-* Tout se configure dans app/config/parameters.yml (copier le fichier app/config/parameters.yml.dist en app/config/parameters.yml et modifier son contenu) :
+* the configuration is in file app/config/parameters.yml (just copy file app/config/parameters.yml.dist in app/config/parameters.yml and modify it) :
 ```
     ldap_hostname: ldap.univ.fr				# Server LDAP
     ldap_base_dn: 'dc=univ,dc=fr'			# basedn
