@@ -13,6 +13,12 @@ The storage :
 - one side in metadatas (database stored the ID LDAP user (uid) and the fingerprint SHA1 of the photo) ;
 - other side in binaries (the path of the stored image is builted from the fingerprint SHA1 of the photo, example: if the fingerprint SHA1 is 8a7b908fdac1eedc8acc8f7758f19a33faf2eb72 then the photo will be stored in 8a/7b/908fdac1eedc8acc8f7758f19a33faf2eb72.jpg) ;
 
+Client side uses :
+---
+- Photo in applications symfony 2 : https://github.com/l3-team/PhotoBundle
+- Photo in esup-mon-dossier-web version2 : https://github.com/l3-team/Lille3PhotoEsupMonDossierWebV2
+- Photo in esup-mon-dossier-web version3 : https://github.com/l3-team/Lille3PhotoEsupMonDossierWebV3
+
 How it works (two steps use) :
 ---
 - first the route /token/add/{uid} is accessed only for authorized application (example : http://server/refphoto/token/add/P7279), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
