@@ -1,6 +1,17 @@
 {
     "name": "lille3/photo",
     "type": "project",
+    "license": "(c) Copyright Universite Lille3 - Charles de Gaulle",
+    "authors": [
+        {
+            "name": "Pierre Pélisset",
+            "email": "pierre.pelisset@univ-lille3.fr"
+        },
+        {
+            "name": "Mathieu Hétru",
+            "email": "mathieu.hetru@univ-lille3.fr"
+        }
+    ],
     "autoload": {
         "psr-4": { "": "src/", "SymfonyStandard\\": "app/" }
     },
