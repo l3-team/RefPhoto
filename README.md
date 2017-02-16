@@ -15,16 +15,16 @@ The storage :
 
 How it works (two steps use) :
 ---
-- first the route /token/add/<uid> is accessed only for authorized application (example : http://server/refphoto/token/add/P7279), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
-- then the route /image/<token> is accessed for public (example : http://server/refphoto/image/c4ca4238a0b923820dcc509a6f75849b), it shows the photo of the user of not (according the value TRUE ou FALSE of the LDAP field usePhoto on the LDAP record for the user) ;
+- first the route /token/add/{uid} is accessed only for authorized application (example : http://server/refphoto/token/add/P7279), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
+- then the route /image/{token} is accessed for public (example : http://server/refphoto/image/c4ca4238a0b923820dcc509a6f75849b), it shows the photo of the user of not (according the value TRUE ou FALSE of the LDAP field usePhoto on the LDAP record for the user) ;
 
 Other routes (one step use) :
 ---
-- the route /tokenEtu/add/<supannEtuId> is accessed only for authorized application (example : http://server/refphoto/tokenEtu/add/8877665544), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
-- the route /tokenPers/add/<supannEmpId> is accessed only for authorized application (example : http://server/refphoto/tokenPers/add/3007279), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
-- the route /binary/<uid> is accessed only for authorized application (example : http://server/refphoto/binary/P7279), it shows the photo of the user (according his choice if the LDAP field usePhoto) ;
-- the route /binaryEtu/<supannEtuId> is accessed only for authorized application (example : http://server/refphoto/binaryEtu/8877665544), it shows the photo of the user (according the LDAP field usePhoto) ;
-- the route /binaryPers/<supannEmpId> is accessed only for authorized application (example : http://server/refphoto/binaryPers/3007279), it shows the photo of the user (according 
+- the route /tokenEtu/add/{supannEtuId} is accessed only for authorized application (example : http://server/refphoto/tokenEtu/add/8877665544), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
+- the route /tokenPers/add/{supannEmpId} is accessed only for authorized application (example : http://server/refphoto/tokenPers/add/3007279), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
+- the route /binary/{uid} is accessed only for authorized application (example : http://server/refphoto/binary/P7279), it shows the photo of the user (according his choice if the LDAP field usePhoto) ;
+- the route /binaryEtu/{supannEtuId} is accessed only for authorized application (example : http://server/refphoto/binaryEtu/8877665544), it shows the photo of the user (according the LDAP field usePhoto) ;
+- the route /binaryPers/{supannEmpId} is accessed only for authorized application (example : http://server/refphoto/binaryPers/3007279), it shows the photo of the user (according 
 
 Pre-requisites :
 ---
