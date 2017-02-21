@@ -88,6 +88,12 @@ example for values of authorized applications :
         - esup-mon-dossier-web.univ.fr
 ```
 
+Note : if you add or modify the **app/config/parameters.yml**, you must clear the cache with this commands :
+```
+php app/console cache:clear
+php app/console cache:clear --env=prod
+```
+
 * apply ACL on app/cache and app/logs :
 ```
 sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
