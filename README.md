@@ -18,6 +18,7 @@ Client side uses :
 - Photo in applications symfony 2 : https://github.com/l3-team/PhotoBundle
 - Photo in esup-mon-dossier-web version2 : https://github.com/l3-team/Lille3PhotoEsupMonDossierWebV2
 - Photo in esup-mon-dossier-web version3 : https://github.com/l3-team/Lille3PhotoEsupMonDossierWebV3
+- URL directs : http://server/RefPhoto/binary/{uid} or http://server/RefPhoto/binaryEtu/{supannEtuId} or http://server/RefPhoto/binaryPers/{supannEmpId}
 
 How it works (two steps use) :
 ---
@@ -98,6 +99,12 @@ example for values of authorized applications :
      valid_server:
         - 10.131.12.137
         - esup-mon-dossier-web.univ.fr
+```
+
+Note : if you add or modify the **app/config/parameters.yml**, you must clear the cache with this commands :
+```
+php app/console cache:clear
+php app/console cache:clear --env=prod
 ```
 
 * apply ACL on app/cache and app/logs :
