@@ -9,9 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class MainController extends Controller {
+    
 	public function imageAction($token) {
+            
 		$imageUrl = $this->get('lille3_photo.service')->getPath($token);
-
 		$response = new Response();
 		if(!empty($imageUrl)) $response->setContent(file_get_contents($imageUrl));
 		$response->headers->set('Content-Type', 'image/jpeg');
@@ -20,10 +21,12 @@ class MainController extends Controller {
 	}
 
 	public function createTokenAction(Request $request, $uid) {
+            
 		Request::setTrustedProxies(array('127.0.0.1', $request->server->get('REMOTE_ADDR')));
 		Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
 		$request->setTrustedHeaderName(Request::HEADER_CLIENT_IP, 'X_FORWARDED_FOR');
-
+                
+                
 		if(!in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server')))
 			throw new AccessDeniedHttpException();
 

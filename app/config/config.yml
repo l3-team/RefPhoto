@@ -37,6 +37,18 @@ twig:
     strict_variables: "%kernel.debug%"
 
 lille3_photo:
+    fieldldap:
+        name: "%fieldldap_name%"
+        multivaluated: "%fieldldap_multivaluated%"
+        positivevalue: "%fieldldap_positivevalue%"
+        negativevalue: "%fieldldap_negativevalue%"
+        id: "%fieldldap_id%"
+        profil: "%fieldldap_profil%"
+        profils: "%fieldldap_profils%"
+        idstudent: "%fieldldap_idstudent%"
+        idemployee: "%fieldldap_idemployee%"
+        studentvalues: "%fieldldap_studentvalues%"
+        employeevalues: "%fieldldap_employeevalues%"
     easyid:
         activated: "%easyid_activated%"
         username: "%easyid_username%"

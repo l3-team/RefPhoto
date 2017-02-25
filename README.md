@@ -53,6 +53,18 @@ Installation
     ldap_dn: 'cn=user,ou=ldapusers,dc=univ,dc=fr'	# user
     ldap_password: 'password'				# pass
 
+    fieldldap_name: 'usePhoto'                          # name of the ldap field in your LDAP directory
+    fieldldap_multivaluated: 'false'                    # 'true' if your field is multivaluated, 'false' otherwise...
+    fieldldap_positivevalue: 'TRUE'                     # the value is your field is true
+    fieldldap_negativevalue: 'FALSE'                    # the value is your field is false
+    fieldldap_id: 'uid'                                 # the ldap field for the id of your persons in your ldap directory
+    fieldldap_profil: 'edupersonprimaryaffiliation'     # the ldap field for the principal affiliation
+    fieldldap_profils: 'edupersonaffiliation'           # the ldap field for the multiple affiliation of your persons
+    fieldldap_idstudent: 'supannetuid'                  # the ldap field for student number
+    fieldldap_idemployee: 'supannempid'                 # the ldap field for employee number
+    fieldldap_studentvalues: ['student']                # the values for your students for affiliation
+    fieldldap_employeevalues: ['faculty', 'employee', 'staff'] # the values for your employees for affiliation
+
     easyid_activated: 'false'				# if BLOB stored in DB in EasyID
     easyid_username: "easyid"				
     easyid_password: "password"
@@ -90,8 +102,8 @@ example for values of authorized applications :
 
 * apply ACL on app/cache and app/logs :
 ```
-sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
-sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs
+sudo setfacl -R -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs binaries
+sudo setfacl -dR -m u:www-data:rwx -m u:`whoami`:rwx app/cache app/logs binaries
 ```
 
 * install the dependency :

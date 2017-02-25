@@ -23,6 +23,17 @@ parameters:
     ldap_dn: 'cn=user,ou=ldapusers,dc=univ,dc=fr'
     ldap_password: 'password'
 
+    fieldldap_name: 'usePhoto'
+    fieldldap_multivaluated: 'false'
+    fieldldap_positivevalue: 'TRUE'
+    fieldldap_negativevalue: 'FALSE'
+    fieldldap_id: 'uid'
+    fieldldap_profil: 'edupersonprimaryaffiliation'
+    fieldldap_profils: 'edupersonaffiliation'
+    fieldldap_idstudent: 'supannetuid'
+    fieldldap_idemployee: 'supannempid'
+    fieldldap_studentvalues: ['student']
+    fieldldap_employeevalues: ['faculty', 'employee', 'staff']
     easyid_activated: 'false'
     easyid_username: "easyid"
     easyid_password: "password"
