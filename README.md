@@ -18,6 +18,7 @@ Client side uses :
 - Photo in applications symfony 2 : https://github.com/l3-team/PhotoBundle
 - Photo in esup-mon-dossier-web version2 : https://github.com/l3-team/Lille3PhotoEsupMonDossierWebV2
 - Photo in esup-mon-dossier-web version3 : https://github.com/l3-team/Lille3PhotoEsupMonDossierWebV3
+- Photo with routes /binary*
 
 How it works (two steps use) :
 ---
