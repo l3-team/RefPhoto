@@ -54,10 +54,10 @@ lille3_photo:
         username: "%easyid_username%"
         password: "%easyid_password%"
         connection: "%easyid_connection%"
-    easyidcomue:
-        activated: "%easyidcomue_activated%"
-        dirlocalread: "%easyidcomue_dirlocalread%"
-        extfile: "%easyidcomue_extfile%"
+    files:
+        activated: "%files_activated%"
+        dirlocalread: "%files_dirlocalread%"
+        extfile: "%files_extfile%"
     path: "%photo_path%"
     memcached:
         host: "%memcached_host%"

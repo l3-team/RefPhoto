@@ -39,9 +39,9 @@ parameters:
     easyid_password: "password"
     easyid_connection: "localhost:1522/EASYID"
 
-    easyidcomue_activated: 'false'
-    easyidcomue_dirlocalread: '/srv/photos/dev/datas'
-    easyidcomue_extfile: '.jpg'
+    files_activated: 'false'
+    files_dirlocalread: '/srv/photos/dev/datas'
+    files_extfile: '.jpg'
 
     db_hostname: bdd.univ.fr
     db_username: dbuser

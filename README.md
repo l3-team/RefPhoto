@@ -71,9 +71,9 @@ Installation
     easyid_password: "password"
     easyid_connection: "localhost:1522/EASYID"
 
-    easyidcomue_activated: 'false'			# if files stored in /srv/photos/datas (filename {student_number}.jpg or {employee_number}.jpg)
-    easyidcomue_dirlocalread: '/srv/photos/datas'
-    easyidcomue_extfile: '.jpg'
+    files_activated: 'false'			# if files stored in /srv/photos/datas (filename {student_number}.jpg or {employee_number}.jpg)
+    files_dirlocalread: '/srv/photos/datas'
+    files_extfile: '.jpg'
 
     db_hostname: db.univ.fr
     db_username: dbuser

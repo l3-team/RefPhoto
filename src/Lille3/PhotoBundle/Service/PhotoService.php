@@ -130,8 +130,8 @@ class PhotoService {
         }
 
         // si la photo est stockée sur le filesystem du serveur
-        if ($this->setting['easyidcomue']['activated'] == 'true') {
-            $img = $this->getPhotoFromComue($uid, $id, $user[$this->setting['fieldldap']['profil']][0], $output);
+        if ($this->setting['files']['activated'] == 'true') {
+            $img = $this->getPhotoFromFile($uid, $id, $user[$this->setting['fieldldap']['profil']][0], $output);
         } else { 
             $img = null;
         }
@@ -370,7 +370,7 @@ class PhotoService {
         return ob_get_clean();
     }
 
-    private function getPhotoFromComue($uid, $id, $type, $output) {
+    private function getPhotoFromFile($uid, $id, $type, $output) {
 
         $population = "";
 
@@ -378,11 +378,11 @@ class PhotoService {
         $path = "";
 
         // on construit l'identifiant comue
-        $id_comue = $id;
+        $id_file = $id;
         // on récupère l'extension de fichier image
-        $extfile = $this->setting['easyidcomue']['extfile'];
+        $extfile = $this->setting['files']['extfile'];
         // on récupère le répertoire de lecture locale
-        $dirlocalread = $this->setting['easyidcomue']['dirlocalread'];
+        $dirlocalread = $this->setting['files']['dirlocalread'];
 
         // variables système
         $output_exec="";
@@ -390,7 +390,7 @@ class PhotoService {
         $return_val="";                        
 
         // on construit le nom du fichier
-        $filename_photo = $dirlocalread . '/' . $id_comue . $extfile;
+        $filename_photo = $dirlocalread . '/' . $id_file . $extfile;
 
         $filename = "";
 
