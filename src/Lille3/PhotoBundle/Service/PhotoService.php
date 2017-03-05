@@ -377,7 +377,7 @@ class PhotoService {
         // on récupère le masque et le chemin selon le type de la personne
         $path = "";
 
-        // on construit l'identifiant comue
+        // on construit l'identifiant
         $id_file = $id;
         // on récupère l'extension de fichier image
         $extfile = $this->setting['files']['extfile'];
