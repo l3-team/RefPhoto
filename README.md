@@ -127,6 +127,10 @@ php app/console photo:user P7279
 ```
 php app/console photo:import
 ```
+- for deletes photos of missings accounts LDAP ;
+```
+php app/console photo:delete
+```
 
 Notice : if memory problem for the command php app/console photo:import,
 then modify the value in src/Lille3/PhotoBundle/Service/PhotoService.php at function importPhotoAll.

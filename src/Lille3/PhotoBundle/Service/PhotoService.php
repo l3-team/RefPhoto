@@ -82,6 +82,62 @@ class PhotoService {
 
         $output->writeln(date('d-m-Y H:i:s') . ':<info>Importation de ' . $i . ' utilisateurs terminées</info>');
     }
+    
+    public function deletePhotos(OutputInterface $output) {
+        // Augmentation de la mémoire totale
+        ini_set('memory_limit', '600M');
+
+        // Récupération du LDAP
+        $query = "(" . $this->setting['fieldldap']['id'] . "=*)";
+        $users = $this->ldap->search($query, array($this->setting['fieldldap']['id'], $this->setting['fieldldap']['name'], $this->setting['fieldldap']['profil'], $this->setting['fieldldap']['profils'], $this->setting['fieldldap']['idstudent'], $this->setting['fieldldap']['idemployee']));
+        unset($users['count']);
+
+        // Liste des UID dans un tableau (pour limiter la consommation RAM)
+        $uidList = array();
+        for($i=0; $i<count($users);$i++) {
+                $uidList[] = $users[$i][$this->setting['fieldldap']['id']][0];
+        }
+        $i=0;
+        
+        // Suppression du tableau LDAP
+        unset($users);
+
+        // On récupère les utilisateurs
+        $query = 'SELECT uid, sha1 FROM sha1';
+
+        // On boucle sur les utilisateurs
+        $j=0;
+        foreach($this->db->query($query) as $row) {
+
+            // on affiche l'utilisateur récupéré
+            $output->writeln("-----------------------------");
+            $output->writeln("uid = [" . $row["uid"] . "]");
+            $output->writeln("sha1 = [" . $row["sha1"] . "]");
+
+            // si l'utilisateur en bdd (photo existante) est dans la liste récupérée du LDAP (donc si il est dans le LDAP...)
+            if (in_array($row["uid"], $uidList)) {
+
+                // on conserve sa photo
+                $output->writeln("uid trouvé dans le LDAP = [OUI]");
+                $output->writeln("photo conservée");
+            } else {
+
+                // on supprime sa photo
+                $output->writeln("uid trouvé dans le LDAP = [NON]");
+
+                if ($this->deletePhoto($row["sha1"])) {
+                    $output->writeln("photo supprimée");
+                    $query2 = 'DELETE FROM sha1 WHERE uid=:uid';
+                    $delete = $this->db->prepare($query2);
+                    $delete->execute(array('uid' => $row["uid"]));
+                    $j++;
+                }
+            }
+        }
+
+        $output->writeln(date('d-m-Y H:i:s') . ':<info>Parcours de ' . $i . ' comptes</info>');
+        $output->writeln(date('d-m-Y H:i:s') . ':<info>Suppression de ' . $j . ' photos</info>');
+    }
 
     public function importUserPhoto(OutputInterface $output, $uid, $force = false) {
         // Récupération des informations
