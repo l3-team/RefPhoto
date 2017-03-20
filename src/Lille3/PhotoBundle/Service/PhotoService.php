@@ -248,7 +248,7 @@ class PhotoService {
         }
     }
 
-    public function getPath($token) {
+    public function getPath($token, $bVerif = true) {
 
         $uid = $this->memcached->get('token_' . $token);
 
@@ -265,38 +265,41 @@ class PhotoService {
             unset($user['count']);
             $user = (array_key_exists(0, $user)) ? $user[0] : array();
 
-            if ($this->setting['fieldldap']['multivaluated'] == 'true') {
+            if ($bVerif == true) {
+                if ($this->setting['fieldldap']['multivaluated'] == 'true') {
 
-                if (!isset($user[$this->setting['fieldldap']['name']][0])) {
-                    return $this->default;
+                    if (!isset($user[$this->setting['fieldldap']['name']][0])) {
+                        return $this->default;
+                    }
+
+                    if (in_array($this->setting['fieldldap']['negativevalue'], $user[$this->setting['fieldldap']['name']][0])) {
+                        return $this->blocked;
+                    }
+
+                    if (in_array($this->setting['fieldldap']['positivevalue'], $user[$this->setting['fieldldap']['name']][0])) {
+                        return $this->blocked;
+                    }
+
+                } else {
+
+                    if (!isset($user[$this->setting['fieldldap']['name']][0])) {
+                        return $this->default;
+                    }
+
+                    if ($user[$this->setting['fieldldap']['name']][0] == $this->setting['fieldldap']['negativevalue']) {
+                        return $this->blocked;
+                    }
+
+
+                    if ($user[$this->setting['fieldldap']['name']][0] == $this->setting['fieldldap']['positivevalue']) {
+                        return $this->photoPath . $this->buildPathWithSha1($sha1);
+                    }
+
+
                 }
-
-                if (in_array($this->setting['fieldldap']['negativevalue'], $user[$this->setting['fieldldap']['name']][0])) {
-                    return $this->blocked;
-                }
-
-                if (in_array($this->setting['fieldldap']['positivevalue'], $user[$this->setting['fieldldap']['name']][0])) {
-                    return $this->blocked;
-                }
-
             } else {
-
-                if (!isset($user[$this->setting['fieldldap']['name']][0])) {
-                    return $this->default;
-                }
-
-                if ($user[$this->setting['fieldldap']['name']][0] == $this->setting['fieldldap']['negativevalue']) {
-                    return $this->blocked;
-                }
-
-
-                if ($user[$this->setting['fieldldap']['name']][0] == $this->setting['fieldldap']['positivevalue']) {
-                    return $this->photoPath . $this->buildPathWithSha1($sha1);
-                }
-
-
+                return $this->photoPath . $this->buildPathWithSha1($sha1);
             }
-
             return $this->blocked;
         }
         return $this->default;

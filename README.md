@@ -89,7 +89,9 @@ Installation
 
     memcached_host: localhost
 
-    valid_server: ~
+    valid_server: ~                                     # address ip or dns server name for apps needs photos 
+
+    xvalid_server: ~                                    # address ip or dns server name for apps needs photos without check the ldap field
 
     ip_reverseproxy: ~
 ```
@@ -100,6 +102,8 @@ example for values of authorized applications :
         - 10.131.12.137
         - esup-mon-dossier-web.univ.fr
 ```
+
+
 
 * apply ACL on app/cache and app/logs :
 ```

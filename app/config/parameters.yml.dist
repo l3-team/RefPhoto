@@ -58,5 +58,7 @@ parameters:
     memcached_host: localhost
 
     valid_server: ~
+
+    xvalid_server: ~
     
     ip_reverseproxy: ~
