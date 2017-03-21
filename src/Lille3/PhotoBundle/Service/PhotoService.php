@@ -249,11 +249,10 @@ class PhotoService {
     }
 
     public function getPath($token, $bVerif = true) {
-
+        
         $uid = $this->memcached->get('token_' . $token);
 
         if($uid === false) throw new NotFoundHttpException();
-        //if($uid === false) return $this->default;
 
         $this->memcached->delete('token_' . $token);
 
@@ -265,19 +264,21 @@ class PhotoService {
             unset($user['count']);
             $user = (array_key_exists(0, $user)) ? $user[0] : array();
 
+            
             if ($bVerif == true) {
+                
                 if ($this->setting['fieldldap']['multivaluated'] == 'true') {
-
-                    if (!isset($user[$this->setting['fieldldap']['name']][0])) {
+                    
+                    if (!isset($user[$this->setting['fieldldap']['name']][0])) {                        
                         return $this->default;
                     }
-
-                    if (in_array($this->setting['fieldldap']['negativevalue'], $user[$this->setting['fieldldap']['name']][0])) {
+                    
+                    if (in_array($this->setting['fieldldap']['negativevalue'], $user[$this->setting['fieldldap']['name']])) {
                         return $this->blocked;
                     }
 
-                    if (in_array($this->setting['fieldldap']['positivevalue'], $user[$this->setting['fieldldap']['name']][0])) {
-                        return $this->blocked;
+                    if (in_array($this->setting['fieldldap']['positivevalue'], $user[$this->setting['fieldldap']['name']])) {
+                        return $this->photoPath . $this->buildPathWithSha1($sha1);
                     }
 
                 } else {
@@ -295,7 +296,6 @@ class PhotoService {
                         return $this->photoPath . $this->buildPathWithSha1($sha1);
                     }
 
-
                 }
             } else {
                 return $this->photoPath . $this->buildPathWithSha1($sha1);
@@ -312,7 +312,6 @@ class PhotoService {
 
         unset($user['count']);
         $user = (array_key_exists(0, $user)) ? $user[0] : array();
-        //var_dump($user);
 
         if (count($user) == 0) {
             return "E";
@@ -330,7 +329,6 @@ class PhotoService {
 
         unset($user['count']);
         $user = (array_key_exists(0, $user)) ? $user[0] : array();
-        //var_dump($user);
 
         if (count($user) == 0) {
             return "P";
