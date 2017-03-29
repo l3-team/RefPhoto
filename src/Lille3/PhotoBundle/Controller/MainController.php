@@ -11,7 +11,7 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 class MainController extends Controller {
     
     public function imageAction(Request $request, $token) {
-        Request::setTrustedProxies(array('127.0.0.1', $request->server->get('REMOTE_ADDR')));
+        /*Request::setTrustedProxies(array('127.0.0.1', $request->server->get('REMOTE_ADDR')));
         Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
         $request->setTrustedHeaderName(Request::HEADER_CLIENT_IP, 'X_FORWARDED_FOR');
         
@@ -19,9 +19,10 @@ class MainController extends Controller {
             $bVerif = false;
         } else {
             $bVerif = true;
-        }
+        }*/
         
-        $imageUrl = $this->get('lille3_photo.service')->getPath($token, $bVerif);
+        //$imageUrl = $this->get('lille3_photo.service')->getPath($token, $bVerif);
+        $imageUrl = $this->get('lille3_photo.service')->getPath($token);
         
         $response = new Response();
         if(!empty($imageUrl)) $response->setContent(file_get_contents($imageUrl));
@@ -38,7 +39,7 @@ class MainController extends Controller {
 
         if ( (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server'))) || 
              (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.xvalid_server'))) )
-            return new Response($this->get('lille3_photo.service')->createToken($uid));        
+            return new Response($this->get('lille3_photo.service')->createToken($request, $uid));        
         
         throw new AccessDeniedHttpException();
     }

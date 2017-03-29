@@ -6,6 +6,7 @@ use OpenLdapObject\LdapClient\Connection;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Acl\Exception\Exception;
+use Symfony\Component\HttpFoundation\Request;
 
 class PhotoService {
     const DEFAULT_PORT = 389;
@@ -248,12 +249,16 @@ class PhotoService {
         }
     }
 
-    public function getPath($token, $bVerif = true) {
+    //public function getPath($token, $bVerif = true) {
+    public function getPath($token) {
         
-        $uid = $this->memcached->get('token_' . $token);
-
+        //$uid = $this->memcached->get('token_' . $token);
+        $tab = $this->memcached->get('token_' . $token);
+        $uid = $tab['uid'];
+        
         if($uid === false) throw new NotFoundHttpException();
-
+        $bVerif = $tab['verif'];
+        
         $this->memcached->delete('token_' . $token);
 
         $sha1 = $this->getSha1ForUid($uid);
@@ -339,13 +344,26 @@ class PhotoService {
         return "P";
     }
 
-    public function createToken($uid) {
+    public function createToken(Request $request, $uid) {
+        Request::setTrustedProxies(array('127.0.0.1', $request->server->get('REMOTE_ADDR')));
+        Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
+        $request->setTrustedHeaderName(Request::HEADER_CLIENT_IP, 'X_FORWARDED_FOR');
+        
+        if(in_array(gethostbyaddr($request->getClientIp()), $this->setting['xvalid_server'])) {
+            $bVerif = false;
+        } else {
+            $bVerif = true;
+        }
+        
+        
         do {
                 $token = substr(sha1($uid . '_' . uniqid() . '_' . time()), 0, 15);
         } while($this->memcached->get('token_' . $token) !== false);
 
-
-        $this->memcached->set('token_' . $token, $uid, 60*2);
+        $tab = Array('uid' => $uid, 'verif' => $bVerif);
+        
+        //$this->memcached->set('token_' . $token, $uid, 60*2);
+        $this->memcached->set('token_' . $token, $tab, 60*2);
 
         return $token;
     }
