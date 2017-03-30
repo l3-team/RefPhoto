@@ -105,7 +105,7 @@ example for values of authorized applications :
 
 example for values of authorized applications without check the value of ldapfield (can be empty with "0" value);
 ```
-     valid_server:
+     xvalid_server:
         - "0"
 ```
 
