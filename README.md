@@ -91,7 +91,7 @@ Installation
 
     valid_server: ~                                     # address ip or dns server name for apps needs photos 
 
-    xvalid_server: ~                                    # address ip or dns server name for apps needs photos without check the ldap field
+    xvalid_server: ~                                    # address ip or dns server name for apps needs photos without check the ldap field, can be empty with value "0"
 
     ip_reverseproxy: ~
 ```
@@ -103,7 +103,11 @@ example for values of authorized applications :
         - esup-mon-dossier-web.univ.fr
 ```
 
-
+example for values of authorized applications without check the value of ldapfield (can be empty with "0" value);
+```
+     valid_server:
+        - "0"
+```
 
 * apply ACL on app/cache and app/logs :
 ```
