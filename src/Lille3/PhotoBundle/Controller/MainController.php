@@ -51,7 +51,7 @@ class MainController extends Controller {
 
         if ( (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server'))) || 
              (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.xvalid_server'))) )
-            return new Response($this->get('lille3_photo.service')->createToken($this->get('lille3_photo.service')->getUidByCodEtu($codeetu)));    
+            return new Response($this->get('lille3_photo.service')->createToken($request, $this->get('lille3_photo.service')->getUidByCodEtu($codeetu)));    
 
         throw new AccessDeniedHttpException();
     }
@@ -68,7 +68,7 @@ class MainController extends Controller {
             $tokens = array();
             foreach($uids as $uid) {
                 $uid = trim($uid);
-                $tokens[$uid] = $this->get('lille3_photo.service')->createToken($uid);
+                $tokens[$uid] = $this->get('lille3_photo.service')->createToken($request, $uid);
             }
             return new JsonResponse($tokens);
         }
@@ -83,7 +83,7 @@ class MainController extends Controller {
 
         if ( (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server'))) || 
              (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.xvalid_server'))) )
-            return $this->imageAction($request, $this->get('lille3_photo.service')->createToken($uid));      
+            return $this->imageAction($request, $this->get('lille3_photo.service')->createToken($request, $uid));      
         
         throw new AccessDeniedHttpException();
     }
@@ -95,7 +95,7 @@ class MainController extends Controller {
 
         if ( (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server'))) || 
              (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.xvalid_server'))) )
-            return $this->imageAction($request, $this->get('lille3_photo.service')->createToken($this->get('lille3_photo.service')->getUidByCodEtu($codeetu)));
+            return $this->imageAction($request, $this->get('lille3_photo.service')->createToken($request, $this->get('lille3_photo.service')->getUidByCodEtu($codeetu)));
 
         throw new AccessDeniedHttpException();
     }
@@ -107,7 +107,7 @@ class MainController extends Controller {
 
         if ( (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server'))) || 
              (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.xvalid_server'))) )
-            return new Response($this->get('lille3_photo.service')->createToken($this->get('lille3_photo.service')->getUidByCodPers($codepers)));       
+            return new Response($this->get('lille3_photo.service')->createToken($request, $this->get('lille3_photo.service')->getUidByCodPers($codepers)));       
         
         throw new AccessDeniedHttpException();
     }
@@ -119,7 +119,7 @@ class MainController extends Controller {
 
         if ( (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server'))) || 
              (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.xvalid_server'))) )
-            return $this->imageAction($request, $this->get('lille3_photo.service')->createToken($this->get('lille3_photo.service')->getUidByCodPers($codepers)));
+            return $this->imageAction($request, $this->get('lille3_photo.service')->createToken($request, $this->get('lille3_photo.service')->getUidByCodPers($codepers)));
         
         throw new AccessDeniedHttpException();
     }
