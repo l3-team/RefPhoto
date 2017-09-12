@@ -124,4 +124,42 @@ class MainController extends Controller {
         throw new AccessDeniedHttpException();
     }
 
+    public function uploadAction(Request $request, $uid) {    
+        /*$data = array('login' => $refphoto_login, 'password' => $refphoto_password);
+
+        $authenticate_url = $this->get('router')->getRouteCollection()->get('refphoto_authenticate'); 
+
+        $ch = curl_init($authenticate_url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        $data = http_build_query($data);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$data);   
+        curl_exec($ch);
+*/
+        return new Response($this->get('lille3_photo.service')->uploadPhoto($request, $uid));       
+    }
+    
+    public function downloadAction(Request $request, $token) {
+        $imageUrl = $this->get('lille3_photo.service')->getPathWithoutVerif($token);
+        
+        $response = new Response();
+        if(!empty($imageUrl)) $response->setContent(file_get_contents($imageUrl));
+        $response->headers->set('Content-Type', 'image/jpeg');
+
+        return $response;
+    }
+
+
+    public function authenticateAction(Request $request) {
+        $refphoto_login = $this->getParameter('general_login');
+        $refphoto_password = $this->getParameter('general_password');
+        $post_login = $request->request->get('login');
+        $post_password = $request->request->get('password');
+
+        if($refphoto_login == $post_login && $refphoto_password == $post_password) {
+            return new JsonResponse(true);
+        } else {            
+            return new JsonResponse(false);
+        }
+    }
+    
 }

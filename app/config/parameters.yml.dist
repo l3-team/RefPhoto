@@ -28,6 +28,7 @@ parameters:
     fieldldap_positivevalue: 'TRUE'
     fieldldap_negativevalue: 'FALSE'
     fieldldap_id: 'uid'
+    fieldldap_structureid: 'supanncodeentite'
     fieldldap_profil: 'edupersonprimaryaffiliation'
     fieldldap_profils: 'edupersonaffiliation'
     fieldldap_idstudent: 'supannetuid'
@@ -52,7 +53,7 @@ parameters:
     photo_resize: "161x178"
     default_photo: /var/www/ws-refphotos/htdocs/default.jpg
     blocked_photo: /var/www/ws-refphotos/blocked.jpg
-
+    forbidden_photo: /var/www/ws-refphotos/forbidden.jpg
     
 
     memcached_host: localhost
@@ -62,3 +63,6 @@ parameters:
     xvalid_server: ~
     
     ip_reverseproxy: ~
+
+    general_login: 'à renseigner'
+    general_password: 'à renseigner'

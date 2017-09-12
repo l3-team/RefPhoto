@@ -1,4 +1,4 @@
 services:
     lille3_photo.service:
         class: Lille3\PhotoBundle\Service\PhotoService
-        arguments: [%ldap_object.host%, %ldap_object.port%, %ldap_object.base_dn%, %ldap_object.dn%, %ldap_object.password%, %lille3_photo%]
+        arguments: [%ldap_object.host%, %ldap_object.port%, %ldap_object.base_dn%, %ldap_object.dn%, %ldap_object.password%, %lille3_photo%, %general_login%, %general_password%]

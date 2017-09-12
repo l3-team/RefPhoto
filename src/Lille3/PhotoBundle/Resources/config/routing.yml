@@ -32,3 +32,20 @@ l3_binary_image_without_token_pers:
     path: /binaryPers/{codepers}
     defaults: { _controller: Lille3PhotoBundle:Main:binaryPers }
  
+l3_upload_photo:
+    path: /upload/{uid}
+    defaults: { _controller: Lille3PhotoBundle:Main:upload }
+    requirements:
+        _method: post
+        
+l3_download_photo:
+    path: /download/{token}
+    defaults: { _controller: Lille3PhotoBundle:Main:download }
+
+
+
+refphoto_authenticate:
+    path: /authenticate
+    defaults: { _controller: Lille3PhotoBundle:Main:authenticate }
+    requirements:
+        _method: post

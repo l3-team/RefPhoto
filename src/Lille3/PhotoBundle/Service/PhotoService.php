@@ -26,8 +26,11 @@ class PhotoService {
     private $resize;
     private $default;
     private $blocked;
+    private $forbidden;
+    private $general_login;
+    private $general_password;
 
-    public function __construct($hostname = false, $port = false, $base_dn = false, $dn = false, $password = false, array $setting) {
+    public function __construct($hostname = false, $port = false, $base_dn = false, $dn = false, $password = false, array $setting, $general_login, $general_password) {
         $this->setting = $setting;
         $this->photoPath = $setting['path'];
         $port = $port ? $port : self::DEFAULT_PORT;
@@ -41,7 +44,10 @@ class PhotoService {
         $this->memcached->addServer($setting['memcached']['host'], $setting['memcached']['port']);
         $this->resize = $setting['resize'];
         $this->default = $setting['default'];
+        $this->general_login = $general_login;
+        $this->general_password = $general_password;
         $this->blocked = $setting['blocked'];
+        $this->forbidden = $setting['forbidden'];
         try {
                 $this->db = new \PDO('mysql:dbname=' . $setting['photo_db']['database'] . ';host=' . $setting['photo_db']['hostname'], $setting['photo_db']['username'], $setting['photo_db']['password'], array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
         } catch(\PDOException $e) {
@@ -58,7 +64,7 @@ class PhotoService {
 
     public function importAllPhoto(OutputInterface $output) {
         // Augmentation de la mémoire totale
-        ini_set('memory_limit', '600M');
+        ini_set('memory_limit', '2000M');
 
         // Récupération du LDAP
         $query = "(" . $this->setting['fieldldap']['id'] . "=*)";
@@ -86,7 +92,7 @@ class PhotoService {
     
     public function deletePhotos(OutputInterface $output) {
         // Augmentation de la mémoire totale
-        ini_set('memory_limit', '600M');
+        ini_set('memory_limit', '2000M');
 
         // Récupération du LDAP
         $query = "(" . $this->setting['fieldldap']['id'] . "=*)";
@@ -102,7 +108,23 @@ class PhotoService {
         
         // Suppression du tableau LDAP
         unset($users);
+        
+         
+        // Récupération du LDAP
+        $query = "(" . $this->setting['fieldldap']['structureid'] . "=*)";
+        $structures = $this->ldap->search($query, array($this->setting['fieldldap']['structureid']), 0, "ou=structures");
 
+        unset($structures['count']);
+        // Liste des UID dans un tableau (pour limiter la consommation RAM)
+        $i = 0;
+        //$uidList = array();
+        for($i=0; $i<count($structures);$i++) {
+            $uidList[] = $structures[$i][$this->setting['fieldldap']['structureid']][0];            
+        }
+        $i=0;
+        // Suppression du tableau LDAP
+        unset($structures);
+      
         // On récupère les utilisateurs
         $query = 'SELECT uid, sha1 FROM sha1';
 
@@ -138,6 +160,7 @@ class PhotoService {
 
         $output->writeln(date('d-m-Y H:i:s') . ':<info>Parcours de ' . $i . ' comptes</info>');
         $output->writeln(date('d-m-Y H:i:s') . ':<info>Suppression de ' . $j . ' photos</info>');
+
     }
 
     public function importUserPhoto(OutputInterface $output, $uid, $force = false) {
@@ -256,7 +279,8 @@ class PhotoService {
         $tab = $this->memcached->get('token_' . $token);
         $uid = $tab['uid'];
         
-        if($uid === false) throw new NotFoundHttpException();
+        //if($uid === false) throw new NotFoundHttpException();
+        if(is_null($uid)) return $this->forbidden;
         $bVerif = $tab['verif'];
         
         $this->memcached->delete('token_' . $token);
@@ -310,6 +334,27 @@ class PhotoService {
         return $this->default;
     }
 
+    public function getPathWithoutVerif($token) {
+        //$uid = $this->memcached->get('token_' . $token);
+        $tab = $this->memcached->get('token_' . $token);
+        $uid = $tab['uid'];
+        
+        //if(is_null($uid)) throw new NotFoundHttpException();
+        if(is_null($uid)) return $this->forbidden;
+        
+        $this->memcached->delete('token_' . $token);
+
+        $sha1 = $this->getSha1ForUid($uid);
+
+        if($sha1 != false) {
+            //$people = $this->ldap->getRepository('Lille3\PhotoBundle\Entity\People')->find($uid);
+
+            return $this->photoPath . $this->buildPathWithSha1($sha1);
+        }
+
+        return "";
+    }
+    
     public function getUidByCodEtu($codeetu) {
         // Récupération des informations
         $query = "(" . $this->setting['fieldldap']['idstudent'] . "=" . $codeetu . ")";
@@ -369,10 +414,10 @@ class PhotoService {
     }
 
 
-    private function saveImage($imageContent) {
+    private function saveImage($imageContent, $resize=true) {
         $imageOriginSha1 = sha1($imageContent);
 
-        if(is_array($this->resize)) {
+        if ((is_array($this->resize)) && ($resize==true)) {
                 $imageContent = $this->resizeImage($imageContent);
                 $imageSha1 = sha1($imageContent);
         } else {
@@ -498,4 +543,73 @@ class PhotoService {
 
         return $contents;
     }
+    
+    public function authenticate($login, $password) {
+        if($this->general_login == $login && $this->general_password == $password) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public function uploadPhoto(Request $request, $uid) {     
+
+        $login = $request->request->get('login');
+        $password = $request->request->get('password');
+        $authenticate = $this->authenticate($login, $password);
+        if($authenticate) {
+            $uniqid = uniqid();
+
+            $file = $request->files->get('file');
+            $file->move('/tmp/', $uniqid);
+            
+
+            $filename = '/tmp/'.$uniqid;
+
+            $handle = fopen($filename, "rb");
+            $contents = fread($handle, filesize($filename));
+            fclose($handle);
+            
+
+            unlink('/tmp/'.$uniqid);
+            
+
+            list($imageSha1, $originSha1) = $this->saveImage($contents, false);
+            
+
+            $oldOriginSha1 = $this->getOriginSha1ForUid($uid);
+            
+            $texte = "";
+            
+            if($oldOriginSha1 !== false) {
+                // Si le Sha1 a changé
+                if($oldOriginSha1 !== $originSha1) {
+                    // Suppression de l'ancienne image
+                    $this->deletePhoto($this->getSha1ForUid($uid));
+                } else {
+                    // Si il a pas changé, on s'arrête
+                    $texte = "Photo déjà existante";
+                    return $texte;
+                }
+                $query = 'UPDATE sha1 SET sha1=:sha1, originsha1=:originsha1 WHERE uid = :uid';
+                $texte = "Photo mise à jour";
+            } else {
+                $query = 'INSERT INTO sha1(uid, sha1, originsha1) VALUES (:uid, :sha1, :originsha1)';
+                $texte = "Photo enregistrée";
+            }
+            // Mise à jour du sha1 dans la BDD
+            $update = $this->db->prepare($query);
+            $update->execute(array(
+                    'uid' => $uid,
+                    'sha1' => utf8_decode($imageSha1),
+                    'originsha1' => utf8_decode($originSha1)
+            ));
+            
+            $this->memcached->delete('sha1_' . $uid);
+        } else {
+            $texte = "La photo n'a pas pu être mise à jour : accés refusé";
+        }
+        return $texte;        
+    }
+    
 }

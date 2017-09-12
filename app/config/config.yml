@@ -43,6 +43,7 @@ lille3_photo:
         positivevalue: "%fieldldap_positivevalue%"
         negativevalue: "%fieldldap_negativevalue%"
         id: "%fieldldap_id%"
+        structureid: "%fieldldap_structureid%"
         profil: "%fieldldap_profil%"
         profils: "%fieldldap_profils%"
         idstudent: "%fieldldap_idstudent%"
@@ -71,6 +72,7 @@ lille3_photo:
     resize: "%photo_resize%"
     default: "%default_photo%"
     blocked: "%blocked_photo%"
+    forbidden: "%forbidden_photo%"
 
 # Ldap
 open_ldap_object_ldap_object:

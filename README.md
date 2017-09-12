@@ -7,7 +7,6 @@ Allow :
 - provide the personal photo of one user to an authorized application (by ip address or dns host) ;
 - from a security token generated on demand (usable only once, valid for 2 minutes) obtained from ID LDAP user (uid), or student card number (supannEtuId), or employee ID number (supannEmpId) ;
 - according to the choice of the user stored in a field on LDAP (usePhoto : TRUE or FALSE). If TRUE, the photo of the user can be returned. If FALSE, the default photo with text "authorization refused" is returned ; 
-
 The storage :
 ---
 - one side in metadatas (database stored the ID LDAP user (uid) and the fingerprint SHA1 of the photo) ;
@@ -84,6 +83,7 @@ Installation
     photo_resize: "161x178"
     default_photo: /var/www/ws-refphotos/htdocs/default.jpg
     blocked_photo: /var/www/ws-refphotos/blocked.jpg
+    forbidden_photo: /var/www/ws-refphotos/blocked.jpg
 
 
 
@@ -94,6 +94,10 @@ Installation
     xvalid_server: ~                                    # address ip or dns server name for apps needs photos without check the ldap field, can be empty with value "0"
 
     ip_reverseproxy: ~
+
+    general_login: 'à renseigner'          # identifiants necessaires pour l'upload
+    general_password: 'à renseigner'
+
 ```
 
 example for values of authorized applications :
@@ -144,6 +148,31 @@ Notice : if memory problem for the command php app/console photo:import,
 then modify the value in src/Lille3/PhotoBundle/Service/PhotoService.php at function importPhotoAll.
 Increase the value of memory_limit : 
 ```
-ini_set('memory_limit', '600M');
+ini_set('memory_limit', '3000M');
 ```  
 
+
+Usecase for upload
+---
+It is possible to upload a picture directly in the referencial photo/
+For this it should just use a formulary HTML with method POST to the route /upload/{uid}.
+And next modify just the field uid, login and password in the example bellow
+Example for upload with uid "toto" :
+```
+
+<form method="post" action="http://serveur/refphoto/web/upload/toto" enctype="multipart/form-data">
+
+	<label for="icone">Fichier :</label><br />
+
+        <input type="file" name="file" id="file" /><br />
+
+	<input type="hidden" name="login" value="identifiant à remplacer"/>
+
+	<input type="hidden" name="password" value="mot de passe à remplacer"/>
+
+        <input type="hidden" name="MAX_FILE_SIZE" value="1048576" />
+
+        <input type="submit" name="submit" value="Envoyer" />
+
+</form>
+```
