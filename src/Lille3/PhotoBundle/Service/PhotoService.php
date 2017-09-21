@@ -450,9 +450,9 @@ class PhotoService {
     }
 
     private function getSha1ForUid($uid) {
-        $sha1 = $this->memcached->get('sha1_' . $uid);
+        //$sha1 = $this->memcached->get('sha1_' . $uid);
 
-        if($sha1!== false) return $sha1;
+        //if($sha1!== false) return $sha1;
 
         // Récupération des données de la table MySQL faisant le lien uid => Sha1
         $query = $this->db->prepare('SELECT sha1 AS sha1 FROM sha1 WHERE uid = ?');
@@ -460,7 +460,7 @@ class PhotoService {
         $mysqlData = $query->fetch(\PDO::FETCH_OBJ);
         if(!$mysqlData) return false;
 
-        $this->memcached->set('sha1_' . $uid, $mysqlData->sha1);
+        //$this->memcached->set('sha1_' . $uid, $mysqlData->sha1);
 
         return is_object($mysqlData) ? $mysqlData->sha1 : false;
     }
@@ -524,10 +524,10 @@ class PhotoService {
             $return_val = 0;                
         } else {// on lit le fichier image par défaut
             //$contents = null;
-            $filename = $this->default;
-            $handle = fopen($this->default, "rb");
-            $contents = fread($handle, filesize($this->default));
-            fclose($handle);
+            //$filename = $this->default;
+            //$handle = fopen($this->default, "rb");
+            //$contents = fread($handle, filesize($this->default));
+            //fclose($handle);
             $return_val = 1;
         }
 
@@ -538,7 +538,7 @@ class PhotoService {
             // ...
             return $contents;
         } else {
-            $output->writeln(date('d-m-Y H:i:s') . ':<error>Fichier ' . $filename_photo .  ' introuvable pour l\'uid ' . $uid . ' (de type ' . $type . '). Utilisation du fichier ' . $filename . '</error>');
+            $output->writeln(date('d-m-Y H:i:s') . ':<error>Fichier ' . $filename_photo .  ' introuvable pour l\'uid ' . $uid . ' (de type ' . $type . ').</error>');
         }
 
         return $contents;
