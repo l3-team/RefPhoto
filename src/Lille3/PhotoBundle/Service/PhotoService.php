@@ -389,12 +389,12 @@ class PhotoService {
         return "P";
     }
 
-    public function createToken(Request $request, $uid) {
+    public function createToken(Request $request, $uid, $codeapp=null) {
         Request::setTrustedProxies(array('127.0.0.1', $request->server->get('REMOTE_ADDR')));
         Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
         $request->setTrustedHeaderName(Request::HEADER_CLIENT_IP, 'X_FORWARDED_FOR');
         
-        if(in_array(gethostbyaddr($request->getClientIp()), $this->setting['xvalid_server'])) {
+        if ( (in_array(gethostbyaddr($request->getClientIp()), $this->setting['xvalid_server'])) && (in_array($codeapp, $this->setting['xvalid_codeapp'])) ) {
             $bVerif = false;
         } else {
             $bVerif = true;

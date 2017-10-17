@@ -91,7 +91,10 @@ Installation
 
     valid_server: ~                                     # address ip or dns server name for apps needs photos 
 
-    xvalid_server: ~                                    # address ip or dns server name for apps needs photos without check the ldap field, can be empty with value "0"
+    xvalid_server: ~                                    # address ip or dns server name for apps needs photos without check the ldap field, can be empty with value "0" (works with codeapp)
+
+    xvalid_codeapp: ~                                   # code application for route /token/{codeapp}/{uid} for without check the ldap field, can be empty with value "0"
+
 
     ip_reverseproxy: ~
 

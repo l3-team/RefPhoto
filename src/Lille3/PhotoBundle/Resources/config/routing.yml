@@ -6,6 +6,10 @@ l3_create_token:
     path: /token/add/{uid}
     defaults: { _controller: Lille3PhotoBundle:Main:createToken }
 
+l3_create_token_with_code:
+    path: /token/{codeapp}/{uid}
+    defaults: { _controller: Lille3PhotoBundle:Main:createTokenWithCode }
+
 l3_create_tokens:
     path: /token/add
     defaults: { _controller: Lille3PhotoBundle:Main:createMultiTokens }

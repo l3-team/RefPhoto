@@ -61,7 +61,9 @@ parameters:
     valid_server: ~
 
     xvalid_server: ~
-    
+
+    xvalid_codeapp: ~    
+
     ip_reverseproxy: ~
 
     general_login: 'à renseigner'

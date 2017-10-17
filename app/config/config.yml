@@ -69,6 +69,7 @@ lille3_photo:
         database: "%db_database%"
     valid_server: "%valid_server%"
     xvalid_server: "%xvalid_server%"
+    xvalid_codeapp: "%xvalid_codeapp%"
     resize: "%photo_resize%"
     default: "%default_photo%"
     blocked: "%blocked_photo%"
