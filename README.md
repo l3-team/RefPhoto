@@ -30,7 +30,12 @@ Other routes :
 - the route /tokenPers/add/{supannEmpId} is accessed only for authorized application (example : http://server/refphoto/tokenPers/add/3007279), it prints the token valid for 2 minutes (example : c4ca4238a0b923820dcc509a6f75849b) ;
 - the route /binary/{uid} is accessed only for authorized application (example : http://server/refphoto/binary/P7279), it shows the photo of the user (according his choice if the LDAP field usePhoto) ;
 - the route /binaryEtu/{supannEtuId} is accessed only for authorized application (example : http://server/refphoto/binaryEtu/8877665544), it shows the photo of the user (according the LDAP field usePhoto) ;
-- the route /binaryPers/{supannEmpId} is accessed only for authorized application (example : http://server/refphoto/binaryPers/3007279), it shows the photo of the user (according 
+- the route /binaryPers/{supannEmpId} is accessed only for authorized application (example : http://server/refphoto/binaryPers/3007279), it shows the photo of the user (according the LDAP field usePhoto) ;
+- the route /binaryDownload/{uid} is accessed only for authorized application (example : http://server/refphoto/binaryDownload/ST5063), it shows the photo without check the LDAP field usePhoto;
+
+on obtient la photo quelque soit la valeur du temoin LDAP.
+
+Remarque : ici pas de jeton token intermédiaire, la photo est obtenue directement en une seule url.
 
 Pre-requisites :
 ---

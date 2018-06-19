@@ -159,6 +159,17 @@ class MainController extends Controller {
         return $response;
     }
 
+    public function binaryDownloadAction(Request $request, $uid) {
+        Request::setTrustedProxies(array('127.0.0.1', $request->server->get('REMOTE_ADDR')));
+        Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
+        $request->setTrustedHeaderName(Request::HEADER_CLIENT_IP, 'X_FORWARDED_FOR');
+
+        if ( (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server'))) || 
+             (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.xvalid_server'))) )        
+            return $this->downloadAction($request, $this->get('lille3_photo.service')->createToken($request, $uid));           
+        
+        throw new AccessDeniedHttpException();
+    }
 
     public function authenticateAction(Request $request) {
         $refphoto_login = $this->getParameter('general_login');

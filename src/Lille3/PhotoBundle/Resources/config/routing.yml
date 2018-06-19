@@ -46,7 +46,9 @@ l3_download_photo:
     path: /download/{token}
     defaults: { _controller: Lille3PhotoBundle:Main:download }
 
-
+l3_download_image_without_token_with_control:
+    path: /binaryDownload/{uid}
+    defaults: { _controller: Lille3PhotoBundle:Main:binaryDownload }
 
 refphoto_authenticate:
     path: /authenticate
