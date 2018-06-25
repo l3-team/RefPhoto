@@ -31,6 +31,9 @@ Other routes :
 - the route /binary/{uid} is accessed only for authorized application (example : http://server/refphoto/binary/P7279), it shows the photo of the user (according his choice if the LDAP field usePhoto) ;
 - the route /binaryEtu/{supannEtuId} is accessed only for authorized application (example : http://server/refphoto/binaryEtu/8877665544), it shows the photo of the user (according the LDAP field usePhoto) ;
 - the route /binaryPers/{supannEmpId} is accessed only for authorized application (example : http://server/refphoto/binaryPers/3007279), it shows the photo of the user (according the LDAP field usePhoto) ;
+- the route /download/{token} is accessed for public (example : http://server/refphoto/image/c4ca4238a0b923820dcc509a6f75849b), it show the photo without check the value of the LDAP field usePhoto;
+
+Remarque : l'image est obtenue en 2 temps, d'abord on obtient un jeton, ensuite on obtient l'image à partir du jeton.
 - the route /binaryDownload/{uid} is accessed only for authorized application (example : http://server/refphoto/binaryDownload/ST5063), it shows the photo without check the LDAP field usePhoto;
 
 on obtient la photo quelque soit la valeur du temoin LDAP.
