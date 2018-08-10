@@ -87,6 +87,26 @@ class MainController extends Controller {
         throw new AccessDeniedHttpException();
     }
 
+    public function createMultiTokensWithCodeAction(Request $request, $codeapp) {
+        Request::setTrustedProxies(array('127.0.0.1', $request->server->get('REMOTE_ADDR')));
+        Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);
+        $request->setTrustedHeaderName(Request::HEADER_CLIENT_IP, 'X_FORWARDED_FOR');
+
+        if ( (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.valid_server'))) || 
+             (in_array(gethostbyaddr($request->getClientIp()), $this->getParameter('lille3_photo.xvalid_server'))) ) {            
+
+            $uids = json_decode($request->getContent(), true);
+            $tokens = array();
+            foreach($uids as $uid) {
+                $uid = trim($uid);
+                $tokens[$uid] = $this->get('lille3_photo.service')->createToken($request, $uid, $codeapp);
+            }
+            return new JsonResponse($tokens);
+        }
+        
+        throw new AccessDeniedHttpException();
+    }
+
     public function binaryAction(Request $request, $uid) {
         Request::setTrustedProxies(array('127.0.0.1', $request->server->get('REMOTE_ADDR')));
         Request::setTrustedHeaderName(Request::HEADER_FORWARDED, null);

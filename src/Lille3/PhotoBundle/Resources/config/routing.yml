@@ -16,6 +16,12 @@ l3_create_tokens:
     requirements:
         _method: post
 
+l3_create_tokens_with_code:
+    path: /token/{codeapp}
+    defaults: { _controller: Lille3PhotoBundle:Main:createMultiTokensWithCode }
+    requirements:
+        _method: post
+
 l3_create_tokens_etu:
     path: /tokenEtu/add/{codeetu}
     defaults: { _controller: Lille3PhotoBundle:Main:createTokenEtu }   
